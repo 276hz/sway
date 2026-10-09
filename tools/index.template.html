@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="{{@lang}}"{{@fixed}}>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{title}}</title>
+<meta name="description" content="{{desc}}">
+<link rel="canonical" href="{{@url}}">
+{{@alternates}}
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f5f5f3" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0e0e10" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Sway"><meta property="og:locale" content="{{@og_locale}}">{{@og_alt_locales}}
+<meta property="og:title" content="{{ogt}}">
+<meta property="og:description" content="{{ogd}}"><meta property="og:url" content="{{@url}}">
+<meta property="og:image" content="{{@site}}/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="{{ogalt}}">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{{ogt}}"><meta name="twitter:description" content="{{ogd}}"><meta name="twitter:image" content="{{@site}}/og.png"><meta name="twitter:image:alt" content="{{ogalt}}">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script type="application/ld+json">{{@ld_app}}</script>
+<script type="application/ld+json" id="ld-faq">{{@ld_faq}}</script>
+<link rel="manifest" href="{{@base}}manifest.webmanifest"><link rel="icon" href="{{@base}}icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="{{@base}}apple-touch-icon.png">
+<link rel="stylesheet" href="{{@base}}css/styles.css">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400&display=swap"></noscript>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><a class="brand" href="./" aria-label="Sway"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 12c2.5-7 5.5-7 9 0s6.5 7 9 0"/></svg>Sway</a><nav><a href="#privacy" data-i18n="nav.privacy">{{nav.privacy}}</a><a href="#faq" data-i18n="nav.faq">{{nav.faq}}</a><select id="lang" aria-label="{{langl}}"><option value="zh" lang="zh-CN"{{@sel_zh}}>中文</option><option value="en" lang="en"{{@sel_en}}>English</option><option value="vi" lang="vi"{{@sel_vi}}>Tiếng Việt</option></select></nav></header>
+<main>
+<section class="hero">
+  <h1><b data-i18n="h1a">{{h1a}}</b> <span data-i18n="h1b">{{h1b}}</span></h1>
+  <p class="lede" data-i18n="lede">{{lede}}</p>
+</section>
+<section class="ws" id="ws" aria-label="{{wsl}}">
+  <div class="pbar" id="pbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="{{wsp}}" hidden><i></i></div>
+  <label class="drop" id="drop"><input type="file" id="file" multiple><b id="dt">{{drop0}}</b><span class="pick" data-i18n="pick">{{pick}}</span><small data-i18n="fmts">{{fmts}}</small></label>
+  <ul class="files" id="files"></ul>
+  <div class="tool" id="tool">
+    <div id="slot-preset"></div><div id="slot-fmt"></div>
+    <button type="button" class="btn link" id="advbtn" aria-expanded="false" aria-controls="adv"><span data-i18n="adv">{{adv}}</span><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m1 1 4 4 4-4"/></svg></button>
+    <p class="hint" id="pdesc"></p>
+    <p class="hint warn" id="vwarn" hidden></p>
+  </div>
+  <div class="adv" id="adv" hidden></div>
+  <div class="act"><p id="msg" role="status" aria-live="polite"></p><button type="button" class="btn" id="zip" hidden>{{zip0}}</button><button type="button" class="btn" id="pv" data-i18n="prev" disabled>{{prev}}</button><button type="button" class="btn pri" id="go" disabled>{{go}}</button></div>
+</section>
+<noscript><p>需要启用 JavaScript 才能使用 Sway。 · Please enable JavaScript to use Sway. · Cần bật JavaScript để dùng Sway.</p></noscript>
+<section class="info" id="info">
+  <div class="cols">
+    <div><h2 data-i18n="i0">{{i0}}</h2><p data-i18n="i1">{{i1}}</p></div>
+    <div id="privacy"><h2 data-i18n="i2">{{i2}}</h2><p data-i18n="i3">{{i3}}</p></div>
+  </div>
+  <div class="faq" id="faq"><h2 data-i18n="i4">{{i4}}</h2>
+    <details><summary data-i18n="i5">{{i5}}</summary><p data-i18n="i6">{{i6}}</p></details>
+    <details><summary data-i18n="i7">{{i7}}</summary><p data-i18n="i8">{{i8}}</p></details>
+    <details><summary data-i18n="i9">{{i9}}</summary><p data-i18n="i10">{{i10}}</p></details>
+    <details><summary data-i18n="i11">{{i11}}</summary><p data-i18n="i12">{{i12}}</p></details>
+    <details><summary data-i18n="i13">{{i13}}</summary><p data-i18n="i14">{{i14}}</p></details>
+  </div>
+</section>
+</main>
+<div id="upd" role="status" hidden><span data-i18n="upd">{{upd}}</span><button type="button" id="updb" data-i18n="updb">{{updb}}</button></div>
+<footer><span data-i18n="footer">{{footer}}</span><nav class="langs" aria-label="{{langl}}"><a href="{{@rel_zh}}" lang="zh-CN" hreflang="zh-CN" data-lang="zh">中文</a><a href="{{@rel_en}}" lang="en" hreflang="en" data-lang="en">English</a><a href="{{@rel_vi}}" lang="vi" hreflang="vi" data-lang="vi">Tiếng Việt</a></nav></footer>
+</div>
+<script src="{{@base}}js/config.js"></script>
+<script src="{{@base}}js/i18n-data.js"></script>
+<script src="{{@base}}js/i18n.js"></script>
+<script src="{{@base}}js/core.js"></script>
+<script src="{{@base}}js/formats.js"></script>
+<script src="{{@base}}js/effects.js"></script>
+<script src="{{@base}}js/presets.js"></script>
+<script src="{{@base}}js/controls.js"></script>
+<script src="{{@base}}js/ffmpeg.js"></script>
+<script src="{{@base}}js/zip.js"></script>
+<script src="{{@base}}js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="vi" data-fixed-lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sway · Chuyển file âm thanh, video sang FLAC, MP3, WAV, thêm hiệu ứng 8D</title>
+<meta name="description" content="Công cụ miễn phí chạy ngay trên trình duyệt: chuyển mp3, mp4, wav, flac… sang FLAC, MP3, WAV, AAC, Opus và thêm hiệu ứng 8D, reverb, panner. Không tải file lên server.">
+<link rel="canonical" href="https://swaymusic.pages.dev/vi/">
+<link rel="alternate" hreflang="zh-CN" href="https://swaymusic.pages.dev/"><link rel="alternate" hreflang="en" href="https://swaymusic.pages.dev/en/"><link rel="alternate" hreflang="vi" href="https://swaymusic.pages.dev/vi/"><link rel="alternate" hreflang="x-default" href="https://swaymusic.pages.dev/">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f5f5f3" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0e0e10" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Sway"><meta property="og:locale" content="vi_VN"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="en_US">
+<meta property="og:title" content="Sway · Chuyển đổi âm thanh, video và hiệu ứng 8D">
+<meta property="og:description" content="Miễn phí, chạy trong trình duyệt, file không tải lên máy chủ. Hơn 40 mẫu hiệu ứng: 8D, slowed + reverb, nightcore…"><meta property="og:url" content="https://swaymusic.pages.dev/vi/">
+<meta property="og:image" content="https://swaymusic.pages.dev/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Sway: bộ chuyển đổi âm thanh/video ngay trên trình duyệt">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Sway · Chuyển đổi âm thanh, video và hiệu ứng 8D"><meta name="twitter:description" content="Miễn phí, chạy trong trình duyệt, file không tải lên máy chủ. Hơn 40 mẫu hiệu ứng: 8D, slowed + reverb, nightcore…"><meta name="twitter:image" content="https://swaymusic.pages.dev/og.png"><meta name="twitter:image:alt" content="Sway: bộ chuyển đổi âm thanh/video ngay trên trình duyệt">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Sway","url":"https://swaymusic.pages.dev/vi/","description":"Chuyển đổi âm thanh và video sang FLAC, MP3, WAV, AAC, Opus ngay trong trình duyệt, kèm hiệu ứng 8D, reverb, panner.","applicationCategory":"MultimediaApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript and WebAssembly","inLanguage":["zh-CN","en","vi"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script type="application/ld+json" id="ld-faq">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"vi","mainEntity":[{"@type":"Question","name":"Âm thanh 8D là gì?","acceptedAnswer":{"@type":"Answer","text":"Hiệu ứng làm âm thanh có vẻ xoay quanh đầu khi nghe bằng tai nghe, bằng cách đổi liên tục độ lệch thời gian, độ to và âm sắc giữa hai tai."}},{"@type":"Question","name":"File của tôi có bị gửi đi đâu không?","acceptedAnswer":{"@type":"Answer","text":"Không. Toàn bộ việc giải mã, xử lý và xuất file diễn ra trong trình duyệt của bạn."}},{"@type":"Question","name":"Chọn định dạng nào cho chất lượng tốt nhất?","acceptedAnswer":{"@type":"Answer","text":"FLAC hoặc WAV giữ nguyên chất lượng. MP3 320 kbps hoặc AAC phù hợp khi cần file nhỏ. File gốc là mp3 thì xuất FLAC cũng không phục hồi được phần chất lượng đã mất."}},{"@type":"Question","name":"File lớn có xử lý được không?","acceptedAnswer":{"@type":"Answer","text":"Tùy bộ nhớ của thiết bị: âm thanh sau giải mã chiếm nhiều chỗ hơn file gốc rất nhiều và tăng theo thời lượng. Nếu báo hết bộ nhớ, hãy thử file ngắn hơn hoặc xử lý từng file; trên điện thoại nên dùng file ngắn."}},{"@type":"Question","name":"Dùng offline được không?","acceptedAnswer":{"@type":"Answer","text":"Trang mở được khi offline sau lần truy cập đầu. Bộ chuyển đổi (khoảng 30 MB) được tải ở lần chuyển đổi đầu tiên và trình duyệt lưu lại; nếu bạn chưa từng chuyển đổi khi có mạng thì cần kết nối một lần. Trình duyệt có thể xóa bộ nhớ đệm, khi đó sẽ tải lại."}}]}</script>
+<link rel="manifest" href="../manifest.webmanifest"><link rel="icon" href="../icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="stylesheet" href="../css/styles.css">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400&display=swap"></noscript>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><a class="brand" href="./" aria-label="Sway"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 12c2.5-7 5.5-7 9 0s6.5 7 9 0"/></svg>Sway</a><nav><a href="#privacy" data-i18n="nav.privacy">Riêng tư</a><a href="#faq" data-i18n="nav.faq">Hỏi đáp</a><select id="lang" aria-label="Ngôn ngữ"><option value="zh" lang="zh-CN">中文</option><option value="en" lang="en">English</option><option value="vi" lang="vi" selected>Tiếng Việt</option></select></nav></header>
+<main>
+<section class="hero">
+  <h1><b data-i18n="h1a">Chuyển đổi âm thanh và video.</b> <span data-i18n="h1b">Nhanh, riêng tư, không tải lên.</span></h1>
+  <p class="lede" data-i18n="lede">Hỗ trợ các định dạng âm thanh và video phổ biến, kèm hơn 40 mẫu hiệu ứng như 8D và reverb. Chạy hoàn toàn trong trình duyệt của bạn.</p>
+</section>
+<section class="ws" id="ws" aria-label="Bộ chuyển đổi">
+  <div class="pbar" id="pbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Tiến độ" hidden><i></i></div>
+  <label class="drop" id="drop"><input type="file" id="file" multiple><b id="dt">Thả file âm thanh hoặc video vào đây</b><span class="pick" data-i18n="pick">hoặc chọn từ máy</span><small data-i18n="fmts">MP3 · WAV · FLAC · M4A · OGG · OPUS · MP4 · MOV · MKV · WEBM và các định dạng phổ biến khác</small></label>
+  <ul class="files" id="files"></ul>
+  <div class="tool" id="tool">
+    <div id="slot-preset"></div><div id="slot-fmt"></div>
+    <button type="button" class="btn link" id="advbtn" aria-expanded="false" aria-controls="adv"><span data-i18n="adv">Nâng cao</span><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m1 1 4 4 4-4"/></svg></button>
+    <p class="hint" id="pdesc"></p>
+    <p class="hint warn" id="vwarn" hidden></p>
+  </div>
+  <div class="adv" id="adv" hidden></div>
+  <div class="act"><p id="msg" role="status" aria-live="polite"></p><button type="button" class="btn" id="zip" hidden>Tải tất cả (ZIP)</button><button type="button" class="btn" id="pv" data-i18n="prev" disabled>Nghe thử</button><button type="button" class="btn pri" id="go" disabled>Chuyển đổi</button></div>
+</section>
+<noscript><p>需要启用 JavaScript 才能使用 Sway。 · Please enable JavaScript to use Sway. · Cần bật JavaScript để dùng Sway.</p></noscript>
+<section class="info" id="info">
+  <div class="cols">
+    <div><h2 data-i18n="i0">Chuyển đổi được gì</h2><p data-i18n="i1">Nhận MP3, WAV, FLAC, M4A, OGG, Opus, WMA, AIFF, MP4, MOV, MKV, WebM và nhiều định dạng khác. Xuất FLAC, WAV, AIFF, ALAC, MP3, AAC, OGG, Opus, AC3, MP2, WMA hoặc MP4/MKV giữ hình. Có hơn 40 mẫu: 8D, slowed + reverb, nightcore, karaoke…</p></div>
+    <div id="privacy"><h2 data-i18n="i2">Riêng tư</h2><p data-i18n="i3">Giải mã, xử lý và xuất file đều diễn ra trong trình duyệt bằng ffmpeg.wasm. File âm thanh của bạn không được gửi tới máy chủ nào, không cần tài khoản, miễn phí. Bộ chuyển đổi và phông chữ được tải từ CDN công cộng.</p></div>
+  </div>
+  <div class="faq" id="faq"><h2 data-i18n="i4">Hỏi đáp</h2>
+    <details><summary data-i18n="i5">Âm thanh 8D là gì?</summary><p data-i18n="i6">Hiệu ứng làm âm thanh có vẻ xoay quanh đầu khi nghe bằng tai nghe, bằng cách đổi liên tục độ lệch thời gian, độ to và âm sắc giữa hai tai.</p></details>
+    <details><summary data-i18n="i7">File của tôi có bị gửi đi đâu không?</summary><p data-i18n="i8">Không. Toàn bộ việc giải mã, xử lý và xuất file diễn ra trong trình duyệt của bạn.</p></details>
+    <details><summary data-i18n="i9">Chọn định dạng nào cho chất lượng tốt nhất?</summary><p data-i18n="i10">FLAC hoặc WAV giữ nguyên chất lượng. MP3 320 kbps hoặc AAC phù hợp khi cần file nhỏ. File gốc là mp3 thì xuất FLAC cũng không phục hồi được phần chất lượng đã mất.</p></details>
+    <details><summary data-i18n="i11">File lớn có xử lý được không?</summary><p data-i18n="i12">Tùy bộ nhớ của thiết bị: âm thanh sau giải mã chiếm nhiều chỗ hơn file gốc rất nhiều và tăng theo thời lượng. Nếu báo hết bộ nhớ, hãy thử file ngắn hơn hoặc xử lý từng file; trên điện thoại nên dùng file ngắn.</p></details>
+    <details><summary data-i18n="i13">Dùng offline được không?</summary><p data-i18n="i14">Trang mở được khi offline sau lần truy cập đầu. Bộ chuyển đổi (khoảng 30 MB) được tải ở lần chuyển đổi đầu tiên và trình duyệt lưu lại; nếu bạn chưa từng chuyển đổi khi có mạng thì cần kết nối một lần. Trình duyệt có thể xóa bộ nhớ đệm, khi đó sẽ tải lại.</p></details>
+  </div>
+</section>
+</main>
+<div id="upd" role="status" hidden><span data-i18n="upd">Có phiên bản mới</span><button type="button" id="updb" data-i18n="updb">Tải lại</button></div>
+<footer><span data-i18n="footer">Sway · ffmpeg.wasm · chạy hoàn toàn trong trình duyệt</span><nav class="langs" aria-label="Ngôn ngữ"><a href="../" lang="zh-CN" hreflang="zh-CN" data-lang="zh">中文</a><a href="../en/" lang="en" hreflang="en" data-lang="en">English</a><a href="./" lang="vi" hreflang="vi" data-lang="vi">Tiếng Việt</a></nav></footer>
+</div>
+<script src="../js/config.js"></script>
+<script src="../js/i18n-data.js"></script>
+<script src="../js/i18n.js"></script>
+<script src="../js/core.js"></script>
+<script src="../js/formats.js"></script>
+<script src="../js/effects.js"></script>
+<script src="../js/presets.js"></script>
+<script src="../js/controls.js"></script>
+<script src="../js/ffmpeg.js"></script>
+<script src="../js/zip.js"></script>
+<script src="../js/app.js"></script>
+</body>
+</html>

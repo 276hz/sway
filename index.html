@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sway · 音频视频格式转换，在线转 FLAC、MP3、WAV，支持 8D 环绕效果</title>
+<meta name="description" content="免费的浏览器端工具：将 mp3、mp4、wav、flac 等转换为 FLAC、MP3、WAV、AAC、Opus，并可添加 8D、混响、声像效果。文件不会上传到服务器。">
+<link rel="canonical" href="https://swaymusic.pages.dev/">
+<link rel="alternate" hreflang="zh-CN" href="https://swaymusic.pages.dev/"><link rel="alternate" hreflang="en" href="https://swaymusic.pages.dev/en/"><link rel="alternate" hreflang="vi" href="https://swaymusic.pages.dev/vi/"><link rel="alternate" hreflang="x-default" href="https://swaymusic.pages.dev/">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f5f5f3" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0e0e10" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Sway"><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="vi_VN">
+<meta property="og:title" content="Sway · 音频视频格式转换，支持 8D 环绕效果">
+<meta property="og:description" content="免费，在浏览器中运行，文件不上传服务器。40 多种效果预设：8D、Slowed + 混响、Nightcore……"><meta property="og:url" content="https://swaymusic.pages.dev/">
+<meta property="og:image" content="https://swaymusic.pages.dev/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Sway：浏览器端音频视频转换器">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Sway · 音频视频格式转换，支持 8D 环绕效果"><meta name="twitter:description" content="免费，在浏览器中运行，文件不上传服务器。40 多种效果预设：8D、Slowed + 混响、Nightcore……"><meta name="twitter:image" content="https://swaymusic.pages.dev/og.png"><meta name="twitter:image:alt" content="Sway：浏览器端音频视频转换器">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Sway","url":"https://swaymusic.pages.dev/","description":"在浏览器中转换音频和视频为 FLAC、MP3、WAV、AAC、Opus，并添加 8D、混响、声像效果。","applicationCategory":"MultimediaApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript and WebAssembly","inLanguage":["zh-CN","en","vi"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script type="application/ld+json" id="ld-faq">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"zh-CN","mainEntity":[{"@type":"Question","name":"什么是 8D 音频？","acceptedAnswer":{"@type":"Answer","text":"通过不断改变左右耳之间的时间差、音量和音色，让声音在戴耳机时仿佛绕着头部旋转。"}},{"@type":"Question","name":"我的文件会被上传吗？","acceptedAnswer":{"@type":"Answer","text":"不会。解码、处理和导出全部在你的浏览器中完成。"}},{"@type":"Question","name":"选哪种格式音质最好？","acceptedAnswer":{"@type":"Answer","text":"FLAC 或 WAV 可保持原始音质；需要小体积时选 MP3 320 kbps 或 AAC。原文件是 mp3 时，导出 FLAC 也无法恢复已损失的音质。"}},{"@type":"Question","name":"大文件能处理吗？","acceptedAnswer":{"@type":"Answer","text":"取决于设备内存：解码后的音频体积远大于原文件，并随时长增加。如提示内存不足，请换更短的文件或逐个处理；手机上建议处理较短的文件。"}},{"@type":"Question","name":"可以离线使用吗？","acceptedAnswer":{"@type":"Answer","text":"页面本身在首次访问后可离线打开。转换引擎（约 30 MB）在首次转换时下载并由浏览器缓存；如果你还没有联网转换过，则需要联网一次。浏览器可能清除缓存，届时需要重新下载。"}}]}</script>
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="css/styles.css">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400&display=swap"></noscript>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><a class="brand" href="./" aria-label="Sway"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 12c2.5-7 5.5-7 9 0s6.5 7 9 0"/></svg>Sway</a><nav><a href="#privacy" data-i18n="nav.privacy">隐私</a><a href="#faq" data-i18n="nav.faq">常见问题</a><select id="lang" aria-label="语言"><option value="zh" lang="zh-CN" selected>中文</option><option value="en" lang="en">English</option><option value="vi" lang="vi">Tiếng Việt</option></select></nav></header>
+<main>
+<section class="hero">
+  <h1><b data-i18n="h1a">音频与视频转换。</b> <span data-i18n="h1b">快速、私密、无需上传。</span></h1>
+  <p class="lede" data-i18n="lede">支持常见音频和视频格式，内置 40 多种效果，如 8D 和混响。全程在你的浏览器中运行。</p>
+</section>
+<section class="ws" id="ws" aria-label="转换器">
+  <div class="pbar" id="pbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="处理进度" hidden><i></i></div>
+  <label class="drop" id="drop"><input type="file" id="file" multiple><b id="dt">将音频或视频文件拖到这里</b><span class="pick" data-i18n="pick">或从设备选择</span><small data-i18n="fmts">MP3 · WAV · FLAC · M4A · OGG · OPUS · MP4 · MOV · MKV · WEBM 等常见格式</small></label>
+  <ul class="files" id="files"></ul>
+  <div class="tool" id="tool">
+    <div id="slot-preset"></div><div id="slot-fmt"></div>
+    <button type="button" class="btn link" id="advbtn" aria-expanded="false" aria-controls="adv"><span data-i18n="adv">高级</span><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m1 1 4 4 4-4"/></svg></button>
+    <p class="hint" id="pdesc"></p>
+    <p class="hint warn" id="vwarn" hidden></p>
+  </div>
+  <div class="adv" id="adv" hidden></div>
+  <div class="act"><p id="msg" role="status" aria-live="polite"></p><button type="button" class="btn" id="zip" hidden>下载全部 ZIP</button><button type="button" class="btn" id="pv" data-i18n="prev" disabled>试听</button><button type="button" class="btn pri" id="go" disabled>转换</button></div>
+</section>
+<noscript><p>需要启用 JavaScript 才能使用 Sway。 · Please enable JavaScript to use Sway. · Cần bật JavaScript để dùng Sway.</p></noscript>
+<section class="info" id="info">
+  <div class="cols">
+    <div><h2 data-i18n="i0">能转换什么</h2><p data-i18n="i1">支持 MP3、WAV、FLAC、M4A、OGG、Opus、WMA、AIFF、MP4、MOV、MKV、WebM 等常见格式。可导出 FLAC、WAV、AIFF、ALAC、MP3、AAC、OGG、Opus、AC3、MP2、WMA，或保留画面的 MP4/MKV。内置 40 多种预设：8D、slowed + 混响、nightcore、卡拉OK……</p></div>
+    <div id="privacy"><h2 data-i18n="i2">隐私</h2><p data-i18n="i3">解码、处理和导出都在浏览器内通过 ffmpeg.wasm 完成。你的音频文件不会发送到任何服务器，无需账号，免费。转换引擎和字体从公共 CDN 加载。</p></div>
+  </div>
+  <div class="faq" id="faq"><h2 data-i18n="i4">常见问题</h2>
+    <details><summary data-i18n="i5">什么是 8D 音频？</summary><p data-i18n="i6">通过不断改变左右耳之间的时间差、音量和音色，让声音在戴耳机时仿佛绕着头部旋转。</p></details>
+    <details><summary data-i18n="i7">我的文件会被上传吗？</summary><p data-i18n="i8">不会。解码、处理和导出全部在你的浏览器中完成。</p></details>
+    <details><summary data-i18n="i9">选哪种格式音质最好？</summary><p data-i18n="i10">FLAC 或 WAV 可保持原始音质；需要小体积时选 MP3 320 kbps 或 AAC。原文件是 mp3 时，导出 FLAC 也无法恢复已损失的音质。</p></details>
+    <details><summary data-i18n="i11">大文件能处理吗？</summary><p data-i18n="i12">取决于设备内存：解码后的音频体积远大于原文件，并随时长增加。如提示内存不足，请换更短的文件或逐个处理；手机上建议处理较短的文件。</p></details>
+    <details><summary data-i18n="i13">可以离线使用吗？</summary><p data-i18n="i14">页面本身在首次访问后可离线打开。转换引擎（约 30 MB）在首次转换时下载并由浏览器缓存；如果你还没有联网转换过，则需要联网一次。浏览器可能清除缓存，届时需要重新下载。</p></details>
+  </div>
+</section>
+</main>
+<div id="upd" role="status" hidden><span data-i18n="upd">有新版本可用</span><button type="button" id="updb" data-i18n="updb">刷新</button></div>
+<footer><span data-i18n="footer">Sway · ffmpeg.wasm · 全程在浏览器中运行</span><nav class="langs" aria-label="语言"><a href="./" lang="zh-CN" hreflang="zh-CN" data-lang="zh">中文</a><a href="en/" lang="en" hreflang="en" data-lang="en">English</a><a href="vi/" lang="vi" hreflang="vi" data-lang="vi">Tiếng Việt</a></nav></footer>
+</div>
+<script src="js/config.js"></script>
+<script src="js/i18n-data.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/core.js"></script>
+<script src="js/formats.js"></script>
+<script src="js/effects.js"></script>
+<script src="js/presets.js"></script>
+<script src="js/controls.js"></script>
+<script src="js/ffmpeg.js"></script>
+<script src="js/zip.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" data-fixed-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sway · Audio &amp; video converter with 8D and reverb effects</title>
+<meta name="description" content="Free in-browser tool: convert mp3, mp4, wav, flac and more to FLAC, MP3, WAV, AAC or Opus, with 8D, reverb and panner effects. Files never leave your device.">
+<link rel="canonical" href="https://swaymusic.pages.dev/en/">
+<link rel="alternate" hreflang="zh-CN" href="https://swaymusic.pages.dev/"><link rel="alternate" hreflang="en" href="https://swaymusic.pages.dev/en/"><link rel="alternate" hreflang="vi" href="https://swaymusic.pages.dev/vi/"><link rel="alternate" hreflang="x-default" href="https://swaymusic.pages.dev/">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f5f5f3" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0e0e10" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Sway"><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="vi_VN">
+<meta property="og:title" content="Sway · Audio &amp; video converter with 8D effects">
+<meta property="og:description" content="Free, runs in your browser, files are never uploaded. 40+ effect presets: 8D, slowed + reverb, nightcore…"><meta property="og:url" content="https://swaymusic.pages.dev/en/">
+<meta property="og:image" content="https://swaymusic.pages.dev/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Sway: in-browser audio and video converter">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Sway · Audio &amp; video converter with 8D effects"><meta name="twitter:description" content="Free, runs in your browser, files are never uploaded. 40+ effect presets: 8D, slowed + reverb, nightcore…"><meta name="twitter:image" content="https://swaymusic.pages.dev/og.png"><meta name="twitter:image:alt" content="Sway: in-browser audio and video converter">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Sway","url":"https://swaymusic.pages.dev/en/","description":"Convert audio and video to FLAC, MP3, WAV, AAC or Opus in your browser, with 8D, reverb and panner effects.","applicationCategory":"MultimediaApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript and WebAssembly","inLanguage":["zh-CN","en","vi"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script type="application/ld+json" id="ld-faq">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"en","mainEntity":[{"@type":"Question","name":"What is 8D audio?","acceptedAnswer":{"@type":"Answer","text":"An effect that continuously shifts timing, level and tone between your ears so the sound seems to circle your head on headphones."}},{"@type":"Question","name":"Are my files uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. Everything is decoded, processed and exported inside your browser."}},{"@type":"Question","name":"Which format gives the best quality?","acceptedAnswer":{"@type":"Answer","text":"FLAC or WAV keep quality intact; MP3 320 kbps or AAC suit smaller files. Exporting an mp3 to FLAC cannot restore quality already lost."}},{"@type":"Question","name":"Can it handle large files?","acceptedAnswer":{"@type":"Answer","text":"It depends on your device memory: decoded audio takes far more space than the original file and grows with duration. If memory runs out, try a shorter file or one file at a time; on phones, prefer shorter files."}},{"@type":"Question","name":"Does it work offline?","acceptedAnswer":{"@type":"Answer","text":"The page itself opens offline after your first visit. The converter engine (about 30 MB) is downloaded the first time you convert and cached by your browser; if you have never converted while online, you need a connection once. Browsers may clear the cache, in which case it is downloaded again."}}]}</script>
+<link rel="manifest" href="../manifest.webmanifest"><link rel="icon" href="../icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="stylesheet" href="../css/styles.css">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400&display=swap"></noscript>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><a class="brand" href="./" aria-label="Sway"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 12c2.5-7 5.5-7 9 0s6.5 7 9 0"/></svg>Sway</a><nav><a href="#privacy" data-i18n="nav.privacy">Privacy</a><a href="#faq" data-i18n="nav.faq">FAQ</a><select id="lang" aria-label="Language"><option value="zh" lang="zh-CN">中文</option><option value="en" lang="en" selected>English</option><option value="vi" lang="vi">Tiếng Việt</option></select></nav></header>
+<main>
+<section class="hero">
+  <h1><b data-i18n="h1a">Convert audio and video.</b> <span data-i18n="h1b">Fast, private, no upload.</span></h1>
+  <p class="lede" data-i18n="lede">Supports popular audio and video formats with 40+ presets such as 8D and reverb. Runs entirely in your browser.</p>
+</section>
+<section class="ws" id="ws" aria-label="Converter">
+  <div class="pbar" id="pbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progress" hidden><i></i></div>
+  <label class="drop" id="drop"><input type="file" id="file" multiple><b id="dt">Drop audio or video files here</b><span class="pick" data-i18n="pick">or choose from your device</span><small data-i18n="fmts">MP3 · WAV · FLAC · M4A · OGG · OPUS · MP4 · MOV · MKV · WEBM and other popular formats</small></label>
+  <ul class="files" id="files"></ul>
+  <div class="tool" id="tool">
+    <div id="slot-preset"></div><div id="slot-fmt"></div>
+    <button type="button" class="btn link" id="advbtn" aria-expanded="false" aria-controls="adv"><span data-i18n="adv">Advanced</span><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m1 1 4 4 4-4"/></svg></button>
+    <p class="hint" id="pdesc"></p>
+    <p class="hint warn" id="vwarn" hidden></p>
+  </div>
+  <div class="adv" id="adv" hidden></div>
+  <div class="act"><p id="msg" role="status" aria-live="polite"></p><button type="button" class="btn" id="zip" hidden>Download all as ZIP</button><button type="button" class="btn" id="pv" data-i18n="prev" disabled>Preview</button><button type="button" class="btn pri" id="go" disabled>Convert</button></div>
+</section>
+<noscript><p>需要启用 JavaScript 才能使用 Sway。 · Please enable JavaScript to use Sway. · Cần bật JavaScript để dùng Sway.</p></noscript>
+<section class="info" id="info">
+  <div class="cols">
+    <div><h2 data-i18n="i0">What it converts</h2><p data-i18n="i1">Accepts MP3, WAV, FLAC, M4A, OGG, Opus, WMA, AIFF, MP4, MOV, MKV, WebM and other popular formats. Exports FLAC, WAV, AIFF, ALAC, MP3, AAC, OGG, Opus, AC3, MP2, WMA, or MP4/MKV keeping the original picture. 40+ presets: 8D, slowed + reverb, nightcore, karaoke…</p></div>
+    <div id="privacy"><h2 data-i18n="i2">Privacy</h2><p data-i18n="i3">Decoding, processing and export all happen in your browser via ffmpeg.wasm. Your audio files are never sent to any server. No account, free. The converter engine and fonts are loaded from public CDNs.</p></div>
+  </div>
+  <div class="faq" id="faq"><h2 data-i18n="i4">FAQ</h2>
+    <details><summary data-i18n="i5">What is 8D audio?</summary><p data-i18n="i6">An effect that continuously shifts timing, level and tone between your ears so the sound seems to circle your head on headphones.</p></details>
+    <details><summary data-i18n="i7">Are my files uploaded anywhere?</summary><p data-i18n="i8">No. Everything is decoded, processed and exported inside your browser.</p></details>
+    <details><summary data-i18n="i9">Which format gives the best quality?</summary><p data-i18n="i10">FLAC or WAV keep quality intact; MP3 320 kbps or AAC suit smaller files. Exporting an mp3 to FLAC cannot restore quality already lost.</p></details>
+    <details><summary data-i18n="i11">Can it handle large files?</summary><p data-i18n="i12">It depends on your device memory: decoded audio takes far more space than the original file and grows with duration. If memory runs out, try a shorter file or one file at a time; on phones, prefer shorter files.</p></details>
+    <details><summary data-i18n="i13">Does it work offline?</summary><p data-i18n="i14">The page itself opens offline after your first visit. The converter engine (about 30 MB) is downloaded the first time you convert and cached by your browser; if you have never converted while online, you need a connection once. Browsers may clear the cache, in which case it is downloaded again.</p></details>
+  </div>
+</section>
+</main>
+<div id="upd" role="status" hidden><span data-i18n="upd">New version available</span><button type="button" id="updb" data-i18n="updb">Reload</button></div>
+<footer><span data-i18n="footer">Sway · ffmpeg.wasm · runs entirely in your browser</span><nav class="langs" aria-label="Language"><a href="../" lang="zh-CN" hreflang="zh-CN" data-lang="zh">中文</a><a href="./" lang="en" hreflang="en" data-lang="en">English</a><a href="../vi/" lang="vi" hreflang="vi" data-lang="vi">Tiếng Việt</a></nav></footer>
+</div>
+<script src="../js/config.js"></script>
+<script src="../js/i18n-data.js"></script>
+<script src="../js/i18n.js"></script>
+<script src="../js/core.js"></script>
+<script src="../js/formats.js"></script>
+<script src="../js/effects.js"></script>
+<script src="../js/presets.js"></script>
+<script src="../js/controls.js"></script>
+<script src="../js/ffmpeg.js"></script>
+<script src="../js/zip.js"></script>
+<script src="../js/app.js"></script>
+</body>
+</html>
