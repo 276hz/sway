@@ -53,12 +53,12 @@ Preset `MAX dB` (nhóm "Phổ biến"), `MAX dB 8D DISTRIBUTION` (nhóm "8D và 
 
 1. **Bỏ sub-bass < 20 Hz** (không nghe thấy nhưng ăn headroom).
 2. **Đo độ to cả bài** theo ITU-R BS.1770 (K-weighting + cổng -70 LUFS / -10 LU) — khớp `ffmpeg ebur128` trong ±0,3 LU (`tools/check.mjs`, mục 3c).
-3. **Gain riêng cho từng bài**: luôn nâng ít nhất tới mức đỉnh chạm trần (một gain cố định cho cả bài → giữ nguyên chênh lệch giữa các đoạn, "miễn phí" về chất lượng); nhạc nhỏ/nhiều động được nâng thêm tới mục tiêu ≈ -6 LUFS ở 100% (≈ -11 LUFS ở 50%) và chấp nhận tối đa ≈ 9 dB nén đỉnh (≈ 5,5 dB ở 50%). Trần gain +36 dB để không khuếch đại nhiễu nền của file gần như im lặng.
+3. **Gain riêng cho từng bài**: luôn nâng ít nhất tới mức đỉnh chạm trần (một gain cố định cho cả bài → giữ nguyên chênh lệch giữa các đoạn, "miễn phí" về chất lượng); nhạc nhỏ/nhiều động được nâng thêm tới mục tiêu ≈ -5,5 LUFS ở 100% (≈ -11 LUFS ở 50%) và chấp nhận tối đa ≈ 11 dB nén đỉnh (≈ 7 dB ở 50%). Trần gain +42 dB để không khuếch đại nhiễu nền của file gần như im lặng.
 4. **Hai tầng limiter**: tầng chậm (nhìn trước 15 ms, release 350 ms) nhận phần lớn việc nén → ít bơm/méo; tầng nhanh (5 ms / 120 ms) giữ trần tuyệt đối. Cả hai **liên kết stereo** → không lệch hình âm, giữ nguyên chuyển động 8D (có kiểm thử).
 5. **Trần là ĐỈNH THẬT (true peak, nội suy 4×)**, không chỉ đỉnh mẫu — đúng chuẩn khi tải lên Spotify/YouTube/Apple Music. Có kiểm thử bằng tín hiệu có đỉnh nội suy cao hơn đỉnh mẫu 3 dB (không dò đỉnh thật sẽ ra +0,3 dBTP, có dò thì -1,0 dBTP, đo bằng `ffmpeg ebur128`). Trần lấy từ ô "Đỉnh tối đa" (mặc định -1 dBTP); với định dạng nén (MP3/AAC/Opus/…) tự chừa thêm 1 dB cho sai số mã hóa.
 6. Preset đi kèm nén nhẹ (`comp: soft`) trước khi đẩy. Nhạc đã to sẵn không bị làm nhỏ đi.
 
-Muốn **chỉ nhân gain, không nén gì** (giữ đúng khoảng cách giữa các đoạn): kéo "MAX dB" xuống ~20–30% và tắt "Nén động", hoặc dùng "Chuẩn hóa đỉnh: Luôn kéo đỉnh về mức tối đa". Gợi ý xuất FLAC/WAV 24-bit hoặc MP3 320 / AAC. Giới hạn: file nguồn rất nhiễu sẽ bị nâng cả nhiễu nền.
+Muốn **chỉ nhân gain, không nén gì** (giữ đúng khoảng cách giữa các đoạn): kéo "MAX dB" xuống ~20–30% và tắt "Nén động", hoặc dùng "Chuẩn hóa đỉnh: Luôn kéo đỉnh về mức tối đa". Gợi ý xuất FLAC/WAV 24-bit hoặc MP3 320 / AAC. Giới hạn: file nguồn rất nhiễu sẽ bị nâng cả nhiễu nền; độ to thực tế sau limiter được bù để bám sát mục tiêu (kiểm tra bằng đo trực tiếp: -5,6 LUFS so với mục tiêu -5,5).
 
 ## Chỉnh thông số sau khi chọn preset
 
