@@ -1,0 +1,42 @@
+# Cloudflare Pages — https://developers.cloudflare.com/pages/configuration/headers/
+# CSP được thiết kế theo kiến trúc thật: script từ chính site + CDN ghim phiên bản; worker/lõi ffmpeg chạy từ blob: (do trang tạo);
+# 'wasm-unsafe-eval' cho phép biên dịch WebAssembly (không mở eval JS). Không dùng SharedArrayBuffer nên KHÔNG cần COOP/COEP cho ffmpeg.
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: no-referrer
+  Cross-Origin-Opener-Policy: same-origin
+  Strict-Transport-Security: max-age=31536000
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), serial=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval' blob: https://cdn.jsdelivr.net https://fastly.jsdelivr.net https://unpkg.com; worker-src 'self' blob:; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self' blob:; connect-src 'self' blob: https://cdn.jsdelivr.net https://fastly.jsdelivr.net https://unpkg.com https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+
+# Luôn kiểm tra lại với máy chủ (ETag → 304 rẻ); nhờ vậy không ai bị kẹt ở bản cũ
+/
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache
+/en/
+  Cache-Control: no-cache
+/en/index.html
+  Cache-Control: no-cache
+/vi/
+  Cache-Control: no-cache
+/vi/index.html
+  Cache-Control: no-cache
+/404.html
+  Cache-Control: no-cache
+/sw.js
+  Cache-Control: no-cache
+/js/*
+  Cache-Control: no-cache
+/css/*
+  Cache-Control: no-cache
+/manifest.webmanifest
+  Content-Type: application/manifest+json
+  Cache-Control: no-cache
+
+# File dành cho nhà phát triển (nếu thư mục build là gốc repo): không cho lập chỉ mục
+/README.md
+  X-Robots-Tag: noindex
+/tools/*
+  X-Robots-Tag: noindex
