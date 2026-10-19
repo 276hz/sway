@@ -213,7 +213,7 @@ async function measureLoud(L, R, rate) {
 const TPH = [0.25, 0.5, 0.75].map(ph => { const h = []; let sum = 0; for (let k = -3; k <= 4; k++) { const x = k - ph, v = (Math.sin(Math.PI * x) / (Math.PI * x)) * 0.5 * (1 + Math.cos(Math.PI * x / 4)); h.push(v); sum += v; } return h.map(v => v / sum); });
 // Một tầng limiter nhìn trước, liên kết stereo (không lệch hình âm): gain G đặt trước → đỉnh không vượt `ceil`.
 // atk = thời gian nhìn trước/attack (giây), relS = release (giây), tp = dò đỉnh thật. Xử lý tại chỗ.
-async function limitPass(L, R, rate, G, ceil, atk, relS, tp, bar) {
+async function limitPass(L, R, rate, G, ceil, atk, relS, tp, bar, dry) {   // dry = chạy thử: không ghi, trả về tỉ lệ năng lượng sau/trước (để bù phần độ to bị limiter lấy mất)
   const n = L.length, N = Math.max(1, Math.round(atk * rate)), rel = 1 - Math.exp(-1 / (relS * rate)), r = new Float32Array(n);   // r[i] = hệ số giảm cần để mẫu i không vượt trần
   for (let s = 0; s < n; s += BLK) {
     const e = Math.min(n, s + BLK);
@@ -241,17 +241,19 @@ async function limitPass(L, R, rate, G, ceil, atk, relS, tp, bar) {
   }
   bar(0.7);
   // b[i] = trung bình N giá trị m gần nhất (attack mượt, luôn ≤ r[i]) → release một cực → áp gain
-  const ring = new Float32Array(N).fill(r[0]); let sum = r[0] * N, k = 0, env = 1;
+  const ring = new Float32Array(N).fill(r[0]); let sum = r[0] * N, k = 0, env = 1, e0 = 0, e1 = 0;
   for (let s = 0; s < n; s += BLK) {
     const e = Math.min(n, s + BLK);
     for (let i = s; i < e; i++) {
       const m = r[i]; sum += m - ring[k]; ring[k] = m; if (++k === N) k = 0;
       const b = Math.min(1, sum / N); env = b < env ? b : env + (b - env) * rel;
+      if (dry) { const w = L[i] * L[i] + R[i] * R[i]; e0 += w; e1 += w * env * env; continue; }
       const g = G * env, l = L[i] * g, rr = R[i] * g;
       L[i] = l > ceil ? ceil : l < -ceil ? -ceil : l; R[i] = rr > ceil ? ceil : rr < -ceil ? -ceil : rr;
     }
     bar(0.7 + 0.3 * e / n); await tick();
   }
+  return dry ? (e0 > 0 ? e1 / e0 : 1) : 1;
 }
 // amt 0..1 (0 = tắt), ceilDb = trần ĐỈNH THẬT (dBTP). Xử lý tại chỗ; trả {lufsIn, gainDb} hoặc null nếu không làm gì (im lặng).
 // Hai tầng: (A) limiter CHẬM (nhìn trước 15 ms, release 350 ms) nhận phần lớn việc nén → ít bơm/méo; (B) limiter NHANH dò đỉnh thật (5 ms / 120 ms) giữ trần tuyệt đối.
@@ -263,9 +265,12 @@ async function maximize(L, R, rate, amt, ceilDb, bar = () => {}) {
   const { lufs, peak } = await measureLoud(L, R, rate); bar(0.2);
   if (!(lufs > -Infinity) || !(peak > 0)) return null;
   const cd = clampN(ceilDb, -9, -0.1, -1), ceil = Math.pow(10, cd / 20), peakDb = 20 * Math.log10(peak);
-  const target = -16 + 10 * amt, maxGR = 2.5 + 6.5 * amt;   // 100% → mục tiêu ≈ -6 LUFS, chấp nhận tối đa ≈ 9 dB nén đỉnh
+  const target = -16 + 10.5 * amt, maxGR = 2.5 + 8.5 * amt;   // 100% → mục tiêu ≈ -5,5 LUFS, chấp nhận tối đa ≈ 11 dB nén đỉnh
   const gPk = cd - peakDb;   // gain vừa đủ để đỉnh chạm trần (chưa cần limiter): nâng tới đó là "miễn phí" về chất lượng
-  const gDb = Math.max(0, Math.min(Math.max(target - lufs, gPk), gPk + maxGR, 36));
+  const bound = g => Math.max(0, Math.min(Math.max(g, gPk), gPk + maxGR, 42));
+  let gDb = bound(target - lufs);
+  // limiter lấy mất một phần độ to → chạy thử (không ghi) 2 lần để bù, vẫn trong ngân sách nén đỉnh maxGR và trần gain
+  for (let it = 0; it < 2; it++) { const ratio = await limitPass(L, R, rate, Math.pow(10, gDb / 20), ceil, 0.015, 0.35, false, v => bar(0.2 + 0.1 * (it + v) / 2), true); gDb = bound(target - lufs - 10 * Math.log10(Math.max(ratio, 1e-6))); }
   await limitPass(L, R, rate, Math.pow(10, gDb / 20), ceil * Math.pow(10, 4 / 20), 0.015, 0.35, false, v => bar(0.2 + 0.35 * v));
   await limitPass(L, R, rate, 1, ceil, 0.005, 0.12, true, v => bar(0.55 + 0.45 * v));
   return { lufsIn: lufs, gainDb: gDb };
