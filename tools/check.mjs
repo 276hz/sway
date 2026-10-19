@@ -157,7 +157,8 @@ section('3c. MAX dB (maximizer): độ to khớp ffmpeg ebur128, đỉnh không 
     const sw = x => { const v = [0.5, 1, 1.5, 2, 2.5, 3, 3.5].map(t => Math.log(rms(x.L, t) / rms(x.R, t))); return Math.max(...v) - Math.min(...v); }, swOn = sw(on), swOff = sw(off);
     ok(swOn > 0.3 && Math.abs(swOn - swOff) < 0.1, `maxdb_8d @${rate}: vẫn xoay 8D (biên độ L/R ${swOn.toFixed(2)} so với ${swOff.toFixed(2)} khi tắt MAX dB)`); }
   // qua getP/preset thật: preset maxdb ghi đúng thông số
-  { const P = fromPreset('maxdb'); ok(P.maxdb === 1 && P.comp === 'soft', 'preset maxdb: maxdb=100% và comp=soft'); ok(ev(`JSON.stringify(quickIds(PRESETS['maxdb'][1]))`) === '["maxdb"]', 'preset maxdb: có núm chỉnh nhanh MAX dB'); }
+  { const P = fromPreset('maxdb'); ok(P.maxdb === 1 && P.comp === 'soft', 'preset maxdb: maxdb=100% và comp=soft'); ok(ev(`JSON.stringify(quickIds(PRESETS['maxdb'][1]))`) === '["maxdb","mix"]', 'preset maxdb: núm chỉnh nhanh MAX dB + mức reverb');
+    for (const k of ['maxdb', 'maxdb_8d']) { const q = fromPreset(k); ok(q.rv && q.rv !== 'off' && q.mix > 0 && q.maxdb === 1, `preset ${k}: phải có reverb (rv=${q.rv}, mix=${q.mix}) và MAX dB 100%`); } }
 }
 
 section('4. WAV / định dạng / lọc / tên file / ZIP');
@@ -242,6 +243,8 @@ else {
       // định dạng nén (MP3/AAC...): chừa thêm 1 dB → đỉnh thật ≤ -2 dBTP trước khi mã hóa
       { const r3 = await run('quiet.wav', { ...P, fmt: 'mp3', depth: 16 }), a3 = meas(path.join(r3.work, 'out.mp3')); ok(r3.rc === 0 && a3.tp <= -1.0, `MAX dB xuất MP3: đỉnh thật sau mã hóa ≤ -1 dBTP, không clip (${a3.tp})`); }
       // preset MAX dB 8D DISTRIBUTION qua ffmpeg thật
+      { const PM = { ...P0, none: false, fmt: 'flac', depth: 24 }; for (const [k, v] of Object.entries(ev("PRESETS['maxdb'][1]"))) PM[k] = PCT.includes(k) ? v / 100 : v;   // preset MAX dB thật (có reverb phòng nhẹ)
+        const r5 = await run('quiet.wav', PM), a5 = meas(path.join(r5.work, 'out.flac')); ok(r5.rc === 0 && a5.lufs - before.lufs > 18 && a5.tp <= -0.85, `MAX dB (có reverb) thật: ${before.lufs} → ${a5.lufs} LUFS, đỉnh thật ${a5.tp} dBTP`); console.log(`  MAX dB preset (reverb): → ${a5.lufs} LUFS, TP ${a5.tp}`); }
       { const P8 = { ...P0, none: false, fmt: 'flac', depth: 24 }; for (const [k, v] of Object.entries(ev("PRESETS['maxdb_8d'][1]"))) P8[k] = PCT.includes(k) ? v / 100 : v;
         const r4 = await run('quiet.wav', P8), a4 = meas(path.join(r4.work, 'out.flac')); ok(r4.rc === 0 && a4.lufs - before.lufs > 18 && a4.tp <= -0.85, `MAX dB 8D DISTRIBUTION thật: ${before.lufs} → ${a4.lufs} LUFS, đỉnh thật ${a4.tp} dBTP`); console.log(`  MAX dB 8D: ${before.lufs} → ${a4.lufs} LUFS, TP ${a4.tp}; MAX dB: → ${after.lufs} LUFS, TP ${after.tp}`); }
     }
