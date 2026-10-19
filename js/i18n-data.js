@@ -182,7 +182,7 @@ radio|老式收音机|老收音机的窄带声音|Old radio|Narrow vintage radio
 muffled|隔墙听（闷）|像从隔壁房间传来|Through a wall|Like listening from the next room
 under|水下|昏暗、摇摆、带混响|Underwater|Dark, wobbly and reverberant
 tape|老式磁带|轻微抖动、温暖、窄声场|Old cassette|Slight wobble, warm and narrow
-maxdb|MAX dB（最大音量）|测量整首歌的响度，按需放大，再用前瞻限幅器把峰值推到上限：声音小的音乐也能变到最响而不破音。可在“快速调节”里减弱|MAX dB (maximum loudness)|Measures the whole track's loudness, amplifies it as needed, then a look-ahead limiter pushes the peaks to the ceiling: quiet music gets as loud as possible without breaking up. Dial it down in Quick adjust
+maxdb|MAX dB（最大音量）|轻度房间混响（让声音更顺滑、掩盖放大后的底噪）→ 测量整首歌响度，按需放大，再用前瞻限幅器把真峰值推到上限：声音小的音乐也能变到最响而不破音。快速调节：MAX dB、混响量|MAX dB (maximum loudness)|Light room reverb (smoother sound, masks the noise floor raised by the gain) → measures the whole track's loudness, amplifies it as needed, then a look-ahead limiter pushes the true peaks to the ceiling: quiet music gets as loud as possible without breaking up. Quick adjust: MAX dB, reverb level
 maxdb_8d|MAX dB 8D 发行版|8D 环绕（每 8 秒一圈）+ 适度大厅混响 + MAX dB：尽可能响的 8D 成品，适合发布（请戴耳机）。快速调节：MAX dB、周期、轨道深度、混响量|MAX dB 8D DISTRIBUTION|8D circle (8 s per turn) + moderate hall reverb + MAX dB: the loudest clean 8D master, ready to publish (use headphones). Quick adjust: MAX dB, period, orbit depth, reverb level
 stream14|流媒体标准（Spotify / YouTube）|轻度压缩，-14 LUFS|Streaming standard|Light compression, -14 LUFS
 loud|响亮饱满|中度压缩，增强低音和高音|Loud and full|Medium compression, extra bass and treble

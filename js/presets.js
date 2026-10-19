@@ -39,7 +39,7 @@ const PRESETS = {
   muffled:   ['Nghe qua tường (nghẹt)', { pmode: 'off', rv: 'room', revAmt: 0, mix: 15, eq: 'muffled', width: 60 }, 'Như nghe từ phòng bên cạnh'],
   under:     ['Dưới nước', { pmode: 'off', eq: 'muffled', fxm: 'chorus', rv: 'big', revAmt: 30, mix: 30 }, 'Tối, lắc lư và vang'],
   tape:      ['Băng cassette cũ', { pmode: 'off', fxm: 'vibrato', eq: 'warm', width: 70, rv: 'room_s', revAmt: 0, mix: 10 }, 'Rung nhẹ, ấm và hẹp'],
-  maxdb:     ['MAX dB (nhạc nhỏ → to tối đa)', { pmode: 'off', comp: 'soft', maxdb: 100 }, 'Đo độ to cả bài, khuếch đại vừa đủ rồi limiter nhìn trước đẩy đỉnh sát trần (mặc định -1 dBFS): nhạc nhỏ thành to tối đa mà không vỡ tiếng. Kéo “MAX dB” ở Chỉnh nhanh để giảm bớt'],
+  maxdb:     ['MAX dB (nhạc nhỏ → to tối đa)', { pmode: 'off', rv: 'room', revAmt: 30, mix: 14, comp: 'soft', maxdb: 100 }, 'Reverb phòng nhẹ (làm mượt, che bớt nhiễu khi nâng gain) → đo độ to cả bài, khuếch đại vừa đủ rồi limiter đẩy đỉnh thật sát trần (mặc định -1 dBTP): nhạc nhỏ thành to tối đa mà không vỡ tiếng. Chỉnh nhanh: MAX dB, mức reverb'],
   maxdb_8d:  ['MAX dB 8D DISTRIBUTION', { pmode: 'circle', period: 8, panAmt: 100, rv: 'hall', revAmt: 40, mix: 22, comp: 'soft', maxdb: 100 }, '8D vòng tròn 8 giây + reverb hội trường vừa phải + MAX dB: bản 8D to nhất có thể để đăng/phát hành (dùng tai nghe). Chỉnh nhanh: MAX dB, chu kỳ, độ sâu quỹ đạo, mức reverb'],
   stream14:  ['Chuẩn Spotify / YouTube', { pmode: 'off', comp: 'soft', lufs: '-14' }, 'Nén nhẹ, chuẩn -14 LUFS'],
   loud:      ['Nghe to và đầy', { pmode: 'off', comp: 'mid', bassdb: 3, trebdb: 2, lufs: '-14' }, 'Nén vừa, thêm bass và treble'],
