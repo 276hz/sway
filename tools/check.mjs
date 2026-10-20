@@ -156,9 +156,15 @@ section('3c. MAX dB (maximizer): độ to khớp ffmpeg ebur128, đỉnh không 
     const rms = (a, t) => { let e = 0, c = 0; for (let i = Math.round(t * rate); i < Math.round((t + 0.1) * rate); i++) { e += a[i] * a[i]; c++; } return Math.sqrt(e / c); };
     const sw = x => { const v = [0.5, 1, 1.5, 2, 2.5, 3, 3.5].map(t => Math.log(rms(x.L, t) / rms(x.R, t))); return Math.max(...v) - Math.min(...v); }, swOn = sw(on), swOff = sw(off);
     ok(swOn > 0.3 && Math.abs(swOn - swOff) < 0.1, `maxdb_8d @${rate}: vẫn xoay 8D (biên độ L/R ${swOn.toFixed(2)} so với ${swOff.toFixed(2)} khi tắt MAX dB)`); }
+  // MAX VOLUME (maxdb > 100%): to hơn rõ rệt so với MAX dB 100% (kể cả nhạc đã to sẵn), đỉnh vẫn không vượt trần, 8D/stereo không bị lệch
+  for (const [amp, crest] of [[0.04, 0], [0.12, 1], [0.3, 0.4]]) { const sig = mk(3, 44100, amp, crest), l1 = await lufsOf(await run(sig, 1)), o2 = await run(sig, 2), l2 = await lufsOf(o2), pk = Math.max(maxAbs(o2.L), maxAbs(o2.R));
+    ok(finite(o2.L) && finite(o2.R) && pk <= Math.pow(10, -1 / 20) * (1 + 1e-6), `MAX VOLUME (amp ${amp}): đỉnh ${db(pk).toFixed(2)} dBFS vượt trần`);
+    ok(l2 >= l1 + 1.2 && l2 > -5, `MAX VOLUME (amp ${amp}): ${l1.toFixed(1)} (MAX dB) → ${l2.toFixed(1)} LUFS phải to hơn ≥ 1,2 LU và > -5`); }
+  { const sig = mk(2, 44100, 0.1, 0), o = await run({ rate: 44100, L: sig.L, R: sig.L.map(v => v * 0.5) }, 2), r = i => Math.abs(o.R[i]) / (Math.abs(o.L[i]) || 1);
+    let worst = 0, c = 0; for (let i = 20000; i < 60000; i++) if (Math.abs(o.L[i]) > 0.1) { worst = Math.max(worst, Math.abs(r(i) - 0.5)); c++; } ok(c > 100 && worst < 0.02, `MAX VOLUME giữ tỉ lệ L/R (lệch tối đa ${worst.toFixed(3)})`); }
   // qua getP/preset thật: preset maxdb ghi đúng thông số
   { const P = fromPreset('maxdb'); ok(P.maxdb === 1 && P.comp === 'soft', 'preset maxdb: maxdb=100% và comp=soft'); ok(ev(`JSON.stringify(quickIds(PRESETS['maxdb'][1]))`) === '["maxdb","mix"]', 'preset maxdb: núm chỉnh nhanh MAX dB + mức reverb');
-    for (const k of ['maxdb', 'maxdb_8d']) { const q = fromPreset(k); ok(q.rv && q.rv !== 'off' && q.mix > 0 && q.maxdb === 1, `preset ${k}: phải có reverb (rv=${q.rv}, mix=${q.mix}) và MAX dB 100%`); } }
+    for (const k of ['maxdb', 'maxdb_8d', 'maxvol']) { const q = fromPreset(k); ok(q.rv && q.rv !== 'off' && q.mix > 0 && q.maxdb >= 1, `preset ${k}: phải có reverb (rv=${q.rv}, mix=${q.mix}) và MAX dB ≥ 100%`); } }
 }
 
 section('4. WAV / định dạng / lọc / tên file / ZIP');
@@ -228,7 +234,7 @@ else {
   { const r = await run('mono8k.wav', { ...P0, fmt: 'mp3', sr: 'orig' }); ok(r.rc === 0 && r.rate === 8000, 'mono 8 kHz → mp3'); const r2 = await run('hires.flac', { ...P0, fmt: 'aac', sr: 'orig' }); ok(r2.rc === 0 && r2.rate === 192000 && probe(path.join(r2.work, 'out.m4a')).streams.find(s => s.codec_type === 'audio').sample_rate === '96000', '192 kHz → aac (96 kHz)'); const r3 = await run('mono8k.wav', { ...P0, fmt: 'ac3', sr: 'orig' }); ok(r3.rc === 0, 'ac3 từ nguồn 8 kHz (snap 32 kHz)'); }
   { const r = await run('cover.mp3', { ...P0, fmt: 'mp3', cover: true, coverData: new Uint8Array(fs.readFileSync(path.join(media, 'cover.jpg'))) }); ok(r.rc === 0 && probe(path.join(r.work, 'out.mp3')).streams.some(s => s.codec_type === 'video'), 'ảnh bìa thay thế'); const r2 = await run('cover.mp3', { ...P0, fmt: 'flac', strip: true }); const pr2 = probe(path.join(r2.work, 'out.flac')); ok(r2.rc === 0 && !pr2.streams.some(s => s.codec_type === 'video') && !(pr2.format.tags && pr2.format.tags.title), 'xóa metadata phải xóa cả tag lẫn bìa'); }
   { // preset thật (slowed + reverb, nightcore, 8D) qua giải mã MỘT lượt + hiệu ứng
-    for (const k of ['slowed', 'nightcore', 'c8d', 'pingpong', 'podcast', 'maxdb', 'maxdb_8d']) { const raw = ev(`PRESETS['${k}'][1]`), P = { ...P0, none: false, fmt: 'flac' }; for (const [a, v] of Object.entries(raw)) P[a] = PCT.includes(a) ? v / 100 : v; if (k === 'podcast') { P.dn = raw.dn || 0; } const r = await run('cover.mp3', P); ok(r.rc === 0 && r.outLen > 1, 'preset ' + k + ' qua ffmpeg thật'); }
+    for (const k of ['slowed', 'nightcore', 'c8d', 'pingpong', 'podcast', 'maxdb', 'maxdb_8d', 'maxvol']) { const raw = ev(`PRESETS['${k}'][1]`), P = { ...P0, none: false, fmt: 'flac' }; for (const [a, v] of Object.entries(raw)) P[a] = PCT.includes(a) ? v / 100 : v; if (k === 'podcast') { P.dn = raw.dn || 0; } const r = await run('cover.mp3', P); ok(r.rc === 0 && r.outLen > 1, 'preset ' + k + ' qua ffmpeg thật'); }
     { // MAX dB thật: nhạc rất nhỏ (≈ -39 LUFS) → FLAC; đo bằng ebur128 + volumedetect của ffmpeg gốc
       cp.execFileSync('ffmpeg', ['-nostdin', '-y', '-f', 'lavfi', '-i', 'sine=f=220:d=4', '-f', 'lavfi', '-i', 'sine=f=330:d=4', '-f', 'lavfi', '-i', 'sine=f=1800:d=4', '-filter_complex', '[0][1][2]amix=inputs=3:normalize=0,tremolo=f=3:d=0.6,volume=-20dB,aformat=channel_layouts=stereo', path.join(media, 'quiet.wav')], { stdio: 'pipe' });
       const P = { ...P0, none: false, fmt: 'flac', depth: 24, comp: 'soft', maxdb: 1, pmode: 'off' }, r = await run('quiet.wav', P), o = path.join(r.work, 'out.flac');
@@ -245,6 +251,13 @@ else {
       // preset MAX dB 8D DISTRIBUTION qua ffmpeg thật
       { const PM = { ...P0, none: false, fmt: 'flac', depth: 24 }; for (const [k, v] of Object.entries(ev("PRESETS['maxdb'][1]"))) PM[k] = PCT.includes(k) ? v / 100 : v;   // preset MAX dB thật (có reverb phòng nhẹ)
         const r5 = await run('quiet.wav', PM), a5 = meas(path.join(r5.work, 'out.flac')); ok(r5.rc === 0 && a5.lufs - before.lufs > 18 && a5.tp <= -0.85, `MAX dB (có reverb) thật: ${before.lufs} → ${a5.lufs} LUFS, đỉnh thật ${a5.tp} dBTP`); console.log(`  MAX dB preset (reverb): → ${a5.lufs} LUFS, TP ${a5.tp}`); }
+      { // nhạc giống thật, master vừa phải (~ -14 LUFS): MAX dB chỉ nhích thêm ít, MAX VOLUME phải to hơn rõ rệt; đỉnh thật vẫn ≤ -1 dBTP
+        cp.execFileSync('ffmpeg', ['-nostdin', '-y', '-f', 'lavfi', '-i', 'anoisesrc=color=pink:d=6:r=44100:a=0.9:seed=7', '-f', 'lavfi', '-i', 'sine=f=70:d=6', '-filter_complex', '[0]lowpass=f=6000,tremolo=f=2.5:d=0.7[n];[1]volume=0.5,tremolo=f=2:d=0.9[b];[n][b]amix=inputs=2:normalize=0,acompressor=threshold=-18dB:ratio=2.5,volume=-4dB,aformat=channel_layouts=stereo', path.join(media, 'loudsrc.wav')], { stdio: 'pipe' });
+        const mkP = k => { const q = { ...P0, none: false, fmt: 'flac', depth: 24 }; for (const [x, v] of Object.entries(ev(`PRESETS['${k}'][1]`))) q[x] = PCT.includes(x) ? v / 100 : v; return q; };
+        const src = meas(path.join(media, 'loudsrc.wav')), rd = await run('loudsrc.wav', mkP('maxdb')), rv = await run('loudsrc.wav', mkP('maxvol')), md = meas(path.join(rd.work, 'out.flac')), mv = meas(path.join(rv.work, 'out.flac'));
+        console.log(`  nhạc đã to: gốc ${src.lufs} → MAX dB ${md.lufs} → MAX VOLUME ${mv.lufs} LUFS (đỉnh thật ${mv.tp} dBTP)`);
+        ok(rv.rc === 0 && mv.lufs >= md.lufs + 1.0 && mv.lufs > src.lufs + 2.5, `MAX VOLUME thật: to hơn MAX dB ≥ 1 LU và hơn gốc ≥ 2,5 LU (${src.lufs} / ${md.lufs} / ${mv.lufs})`);
+        ok(mv.tp <= -0.85, `MAX VOLUME thật: đỉnh thật ≤ -1 dBTP (${mv.tp})`); }
       { const P8 = { ...P0, none: false, fmt: 'flac', depth: 24 }; for (const [k, v] of Object.entries(ev("PRESETS['maxdb_8d'][1]"))) P8[k] = PCT.includes(k) ? v / 100 : v;
         const r4 = await run('quiet.wav', P8), a4 = meas(path.join(r4.work, 'out.flac')); ok(r4.rc === 0 && a4.lufs - before.lufs > 18 && a4.tp <= -0.85, `MAX dB 8D DISTRIBUTION thật: ${before.lufs} → ${a4.lufs} LUFS, đỉnh thật ${a4.tp} dBTP`); console.log(`  MAX dB 8D: ${before.lufs} → ${a4.lufs} LUFS, TP ${a4.tp}; MAX dB: → ${after.lufs} LUFS, TP ${after.tp}`); }
     }
