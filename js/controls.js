@@ -15,7 +15,7 @@ const CTL = [
   { id: 'kara', fx: 1, label: 'Giảm giọng giữa (karaoke)', min: 0, max: 100, step: 5, val: 0, fmt: v => v + '%' },
   { id: 'dn', fx: 1, label: 'Khử nhiễu', val: 'off', opts: [['off', 'Tắt'], ['10', 'Nhẹ'], ['20', 'Vừa'], ['30', 'Mạnh']] },
   { id: 'comp', fx: 1, label: 'Nén động (compressor)', val: 'off', opts: [['off', 'Tắt'], ['soft', 'Nhẹ'], ['mid', 'Vừa'], ['hard', 'Mạnh']] },
-  { id: 'maxdb', fx: 1, label: 'Tối đa hóa độ to (MAX dB)', min: 0, max: 100, step: 5, val: 0, fmt: v => v + '%' },
+  { id: 'maxdb', fx: 1, label: 'Tối đa hóa độ to (MAX dB; >100% = MAX VOLUME)', min: 0, max: 200, step: 5, val: 0, fmt: v => v + '%' },
   { id: 'fxm', g: 'Điều chế · thời gian', fx: 1, label: 'Hiệu ứng điều chế', val: 'off', opts: [['off', 'Tắt'], ['tremolo', 'Tremolo'], ['vibrato', 'Vibrato'], ['chorus', 'Chorus'], ['flanger', 'Flanger'], ['phaser', 'Phaser'], ['lofi', 'Lo-fi (bitcrush)']] },
   { id: 'rev', fx: 1, label: 'Phát ngược', val: 'off', opts: [['off', 'Tắt'], ['on', 'Bật']] },
   { id: 'fin', fx: 1, label: 'Fade in', min: 0, max: 10, step: 0.5, val: 0, fmt: v => v + ' ' + t('us') },

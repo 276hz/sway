@@ -255,24 +255,46 @@ async function limitPass(L, R, rate, G, ceil, atk, relS, tp, bar, dry) {   // dr
   }
   return dry ? (e0 > 0 ? e1 / e0 : 1) : 1;
 }
-// amt 0..1 (0 = tắt), ceilDb = trần ĐỈNH THẬT (dBTP). Xử lý tại chỗ; trả {lufsIn, gainDb} hoặc null nếu không làm gì (im lặng).
+// Gain G rồi bão hòa mềm LIÊN KẾT stereo (cùng hệ số cho hai kênh → không lệch hình âm 8D): |x| ≤ t giữ nguyên, phần trên t uốn dần về c.
+// Cắt gọn đỉnh nhọn rẻ hơn nhiều so với để limiter ép sâu (ít bơm) — đổi lại có một chút méo hài: chỉ dùng ở chế độ MAX VOLUME (> 100%).
+async function softClip(L, R, G, t, c, bar) {
+  const n = L.length, w = c - t;
+  for (let s = 0; s < n; s += BLK) {
+    const e = Math.min(n, s + BLK);
+    for (let i = s; i < e; i++) {
+      let l = L[i] * G, r = R[i] * G; const m = Math.abs(l) > Math.abs(r) ? Math.abs(l) : Math.abs(r);
+      if (m > t) { const f = (t + w * Math.tanh((m - t) / w)) / m; l *= f; r *= f; }
+      L[i] = l; R[i] = r;
+    }
+    bar(e / n); await tick();
+  }
+}
+// amt 0..2 (0 = tắt, 1 = MAX dB, >1 = MAX VOLUME: ép mạnh hơn + soft-clip), ceilDb = trần ĐỈNH THẬT (dBTP). Xử lý tại chỗ; trả {lufsIn, gainDb} hoặc null nếu không làm gì (im lặng).
 // Hai tầng: (A) limiter CHẬM (nhìn trước 15 ms, release 350 ms) nhận phần lớn việc nén → ít bơm/méo; (B) limiter NHANH dò đỉnh thật (5 ms / 120 ms) giữ trần tuyệt đối.
 async function maximize(L, R, rate, amt, ceilDb, bar = () => {}) {
-  const n = L.length; amt = clampN(amt, 0, 1, 0);
+  const n = L.length; amt = clampN(amt, 0, 2, 0);
   if (!n || amt <= 0) return null;
+  const s1 = Math.min(amt, 1), s2 = Math.max(amt - 1, 0);   // s1: vùng chất lượng (0–100%); s2: vùng "ép tất cả" (100–200%)
   const hp = biquadCoef('hp', 20, 0.707, 0, rate);   // bỏ sub-bass < 20 Hz: không nghe thấy nhưng ăn headroom
   biquadRun(L, hp); await tick(); biquadRun(R, hp); await tick(); bar(0.05);
   const { lufs, peak } = await measureLoud(L, R, rate); bar(0.2);
   if (!(lufs > -Infinity) || !(peak > 0)) return null;
   const cd = clampN(ceilDb, -9, -0.1, -1), ceil = Math.pow(10, cd / 20), peakDb = 20 * Math.log10(peak);
-  const target = -16 + 10.5 * amt, maxGR = 2.5 + 8.5 * amt;   // 100% → mục tiêu ≈ -5,5 LUFS, chấp nhận tối đa ≈ 11 dB nén đỉnh
+  const target = -16 + 10.5 * s1 + 3 * s2, maxGR = 2.5 + 8.5 * s1 + 12 * s2;   // 100% → ≈ -5,5 LUFS / 11 dB nén đỉnh; 200% → ≈ -2,5 LUFS / 23 dB
   const gPk = cd - peakDb;   // gain vừa đủ để đỉnh chạm trần (chưa cần limiter): nâng tới đó là "miễn phí" về chất lượng
-  const bound = g => Math.max(0, Math.min(Math.max(g, gPk), gPk + maxGR, 42));
+  const bound = g => Math.max(0, Math.min(Math.max(g, gPk), gPk + maxGR, 42 + 6 * s2));
   let gDb = bound(target - lufs);
   // limiter lấy mất một phần độ to → chạy thử (không ghi) 2 lần để bù, vẫn trong ngân sách nén đỉnh maxGR và trần gain
   for (let it = 0; it < 2; it++) { const ratio = await limitPass(L, R, rate, Math.pow(10, gDb / 20), ceil, 0.015, 0.35, false, v => bar(0.2 + 0.1 * (it + v) / 2), true); gDb = bound(target - lufs - 10 * Math.log10(Math.max(ratio, 1e-6))); }
-  await limitPass(L, R, rate, Math.pow(10, gDb / 20), ceil * Math.pow(10, 4 / 20), 0.015, 0.35, false, v => bar(0.2 + 0.35 * v));
-  await limitPass(L, R, rate, 1, ceil, 0.005, 0.12, true, v => bar(0.55 + 0.45 * v));
+  const G = Math.pow(10, gDb / 20);
+  if (s2 > 0) {
+    await softClip(L, R, G, ceil * (1 - 0.3 * s2), ceil * 1.25, v => bar(0.3 + 0.1 * v));
+    const m = await measureLoud(L, R, rate);   // soft-clip làm đỉnh thấp đi nên độ to vượt mục tiêu: chỉ hạ khi vượt mục tiêu quá 1,5 LU (không nâng thêm) để không thành sóng vuông
+    if (m.lufs > target + 1.5) { const k = Math.pow(10, (target + 1.5 - m.lufs) / 20); for (let s = 0; s < n; s += BLK) { const e = Math.min(n, s + BLK); for (let i = s; i < e; i++) { L[i] *= k; R[i] *= k; } await tick(); } }
+    await limitPass(L, R, rate, 1, ceil * Math.pow(10, 4 / 20), 0.015, 0.35, false, v => bar(0.4 + 0.2 * v));
+  }
+  else await limitPass(L, R, rate, G, ceil * Math.pow(10, 4 / 20), 0.015, 0.35, false, v => bar(0.2 + 0.35 * v));
+  await limitPass(L, R, rate, 1, ceil * Math.pow(10, (s2 > 0 ? -0.5 : -0.2) / 20), 0.005, 0.12, true, v => bar(0.6 + 0.4 * v));   // biên an toàn cho sai số dò đỉnh thật (nội suy 4×): nhạc càng bị cắt gọn càng cần nhiều
   return { lufsIn: lufs, gainDb: gDb };
 }
 // Chuỗi: (đảo) → độ rộng/karaoke → EQ → echo → reverb → panner → fade → MAX dB. `bar(v)` nhận tiến độ 0..1 của cả chuỗi.
@@ -311,7 +333,7 @@ async function render(dec, P, bar = () => {}) {
   const fi = Math.round(clampN(P.fin, 0, 60, 0) * rate), fo = Math.round(clampN(P.fout, 0, 60, 0) * rate);   // fade in / out (cosine)
   for (let i = 0; i < Math.min(fi, len); i++) { const g = 0.5 - 0.5 * Math.cos(Math.PI * i / fi); outL[i] *= g; outR[i] *= g; }
   for (let i = 0; i < Math.min(fo, len); i++) { const g = 0.5 - 0.5 * Math.cos(Math.PI * i / fo); outL[len - 1 - i] *= g; outR[len - 1 - i] *= g; }
-  if (clampN(P.maxdb, 0, 1, 0) > 0) await maximize(outL, outR, rate, P.maxdb, clampN(P.peak, -9, -0.1, -1) - (FORMATS[P.fmt] && FORMATS[P.fmt].lossy ? 1 : 0), sub(bar, 0.95, 1));   // định dạng nén (MP3/AAC…): chừa thêm 1 dB cho sai số mã hóa   // khâu cuối: đặt sau mọi hiệu ứng khác
+  if (clampN(P.maxdb, 0, 2, 0) > 0) await maximize(outL, outR, rate, P.maxdb, clampN(P.peak, -9, -0.1, -1) - (FORMATS[P.fmt] && FORMATS[P.fmt].lossy ? 1 : 0), sub(bar, 0.95, 1));   // định dạng nén (MP3/AAC…): chừa thêm 1 dB cho sai số mã hóa   // khâu cuối: đặt sau mọi hiệu ứng khác
   bar(1);
   return { length: len, sampleRate: rate, getChannelData: c => c ? outR : outL };
 }

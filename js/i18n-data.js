@@ -184,6 +184,7 @@ under|水下|昏暗、摇摆、带混响|Underwater|Dark, wobbly and reverberant
 tape|老式磁带|轻微抖动、温暖、窄声场|Old cassette|Slight wobble, warm and narrow
 maxdb|MAX dB（最大音量）|轻度房间混响（让声音更顺滑、掩盖放大后的底噪）→ 测量整首歌响度，按需放大，再用前瞻限幅器把真峰值推到上限：声音小的音乐也能变到最响而不破音。快速调节：MAX dB、混响量|MAX dB (maximum loudness)|Light room reverb (smoother sound, masks the noise floor raised by the gain) → measures the whole track's loudness, amplifies it as needed, then a look-ahead limiter pushes the true peaks to the ceiling: quiet music gets as loud as possible without breaking up. Quick adjust: MAX dB, reverb level
 maxdb_8d|MAX dB 8D 发行版|8D 环绕（每 8 秒一圈）+ 适度大厅混响 + MAX dB：尽可能响的 8D 成品，适合发布（请戴耳机）。快速调节：MAX dB、周期、轨道深度、混响量|MAX dB 8D DISTRIBUTION|8D circle (8 s per turn) + moderate hall reverb + MAX dB: the loudest clean 8D master, ready to publish (use headphones). Quick adjust: MAX dB, period, orbit depth, reverb level
+maxvol|MAX VOLUME（全部压到最响）|真正的“最大音量”：强力动态压缩让小声段落与大声段落一样响，软削波修整尖峰，真峰值限幅 -1 dBTP；轻度房间混响让声音更顺滑。会非常“满”且略刺耳 — 想更干净就把 MAX dB 拉回 100%|MAX VOLUME (everything to the max)|Truly maximum volume: heavy compression lifts quiet parts to the level of loud ones, soft clipping trims sharp peaks, true-peak limiter at -1 dBTP; light room reverb keeps it smooth. It will sound very dense and a bit harsh — pull MAX dB back to 100% for a cleaner result
 stream14|流媒体标准（Spotify / YouTube）|轻度压缩，-14 LUFS|Streaming standard|Light compression, -14 LUFS
 loud|响亮饱满|中度压缩，增强低音和高音|Loud and full|Medium compression, extra bass and treble
 bassw|强劲低音 + 宽立体声|低音浓厚，立体声更宽|Heavy bass + wide stereo|Thick bass, wider stereo
@@ -212,7 +213,7 @@ middb|中频（人声）|Mid (voice)
 trebdb|高音|Treble
 kara|削弱中置人声（卡拉OK）|Center cut (karaoke)
 dn|降噪|Denoise
-maxdb|最大化响度（MAX dB）|Loudness maximizer (MAX dB)
+maxdb|最大化响度（MAX dB；>100% = MAX VOLUME）|Loudness maximizer (MAX dB; >100% = MAX VOLUME)
 comp|动态压缩|Compressor
 fxm|调制效果|Modulation effect
 rev|倒放|Reverse

@@ -41,6 +41,7 @@ const PRESETS = {
   tape:      ['Băng cassette cũ', { pmode: 'off', fxm: 'vibrato', eq: 'warm', width: 70, rv: 'room_s', revAmt: 0, mix: 10 }, 'Rung nhẹ, ấm và hẹp'],
   maxdb:     ['MAX dB (nhạc nhỏ → to tối đa)', { pmode: 'off', rv: 'room', revAmt: 30, mix: 14, comp: 'soft', maxdb: 100 }, 'Reverb phòng nhẹ (làm mượt, che bớt nhiễu khi nâng gain) → đo độ to cả bài, khuếch đại vừa đủ rồi limiter đẩy đỉnh thật sát trần (mặc định -1 dBTP): nhạc nhỏ thành to tối đa mà không vỡ tiếng. Chỉnh nhanh: MAX dB, mức reverb'],
   maxdb_8d:  ['MAX dB 8D DISTRIBUTION', { pmode: 'circle', period: 8, panAmt: 100, rv: 'hall', revAmt: 40, mix: 22, comp: 'soft', maxdb: 100 }, '8D vòng tròn 8 giây + reverb hội trường vừa phải + MAX dB: bản 8D to nhất có thể để đăng/phát hành (dùng tai nghe). Chỉnh nhanh: MAX dB, chu kỳ, độ sâu quỹ đạo, mức reverb'],
+  maxvol:    ['MAX VOLUME (ép tất cả lên tối đa)', { pmode: 'off', rv: 'room', revAmt: 30, mix: 14, comp: 'hard', maxdb: 200 }, 'To hết cỡ, đúng nghĩa: nén động mạnh để đoạn nhỏ lên ngang đoạn to, soft-clip gọn đỉnh nhọn, limiter đỉnh thật -1 dBTP; reverb phòng nhẹ cho mượt. Nghe sẽ rất đặc và hơi “gắt” — kéo MAX dB về 100% nếu muốn sạch hơn'],
   stream14:  ['Chuẩn Spotify / YouTube', { pmode: 'off', comp: 'soft', lufs: '-14' }, 'Nén nhẹ, chuẩn -14 LUFS'],
   loud:      ['Nghe to và đầy', { pmode: 'off', comp: 'mid', bassdb: 3, trebdb: 2, lufs: '-14' }, 'Nén vừa, thêm bass và treble'],
   bassw:     ['Bass mạnh + stereo rộng', { pmode: 'off', rv: 'off', eq: 'bass', width: 150 }, 'Bass dày, stereo rộng'],
@@ -53,7 +54,7 @@ const PRESETS = {
   fade:      ['Fade in 3 giây, fade out 5 giây', { pmode: 'off', fin: 3, fout: 5 }, 'Vào và ra êm ái'],
 };
 const PGROUPS = [
-  ['Phổ biến', ['none', 'flmobile', 'c8d', 'slowed', 'nightcore', 'bighall', 'maxdb', 'xuanha']],
+  ['Phổ biến', ['none', 'flmobile', 'c8d', 'slowed', 'nightcore', 'bighall', 'maxdb', 'maxvol', 'xuanha']],
   ['8D và không gian', ['maxdb_8d', 'c8d_hall', 'c8d_close', 'c8d_far', 'c8d_bass', 'c8d_slow', 'c8d_fast', 'c8d_rev', 'swing', 'fig8', 'drift', 'dream', 'space', 'pingpong', 'cave', 'stadium', 'cathedral']],
   ['Giọng và nhạc cụ', ['podcast', 'karaoke', 'vocal', 'telephone', 'megaphone', 'deep', 'chip']],
   ['Tốc độ và cao độ', ['vapor', 'fast2', 'slow2', 'down2', 'up2']],
