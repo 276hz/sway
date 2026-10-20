@@ -58,6 +58,8 @@ Preset `MAX dB` (nhóm "Phổ biến"), `MAX dB 8D DISTRIBUTION` (nhóm "8D và 
 5. **Trần là ĐỈNH THẬT (true peak, nội suy 4×)**, không chỉ đỉnh mẫu — đúng chuẩn khi tải lên Spotify/YouTube/Apple Music. Có kiểm thử bằng tín hiệu có đỉnh nội suy cao hơn đỉnh mẫu 3 dB (không dò đỉnh thật sẽ ra +0,3 dBTP, có dò thì -1,0 dBTP, đo bằng `ffmpeg ebur128`). Trần lấy từ ô "Đỉnh tối đa" (mặc định -1 dBTP); với định dạng nén (MP3/AAC/Opus/…) tự chừa thêm 1 dB cho sai số mã hóa.
 6. Preset đi kèm nén nhẹ (`comp: soft`) trước khi đẩy. Nhạc đã to sẵn không bị làm nhỏ đi.
 
+**MAX VOLUME** (preset `MAX VOLUME`, hoặc kéo thanh `maxdb` quá 100% tới 200%) là chế độ "ép tất cả lên tối đa", không còn ưu tiên giữ động: nén động mạnh (`comp: hard`) để đoạn nhỏ lên ngang đoạn to → gain tới ≈ -2,5 LUFS với ngân sách nén đỉnh tới ≈ 23 dB → **soft-clip liên kết stereo** (`softClip()`, tanh, cùng hệ số cho hai kênh nên không lệch hình âm) gọt đỉnh nhọn → limiter hai tầng như trên, biên an toàn 0,5 dB cho sai số dò đỉnh thật. Trên nhạc giống thật có động, MAX VOLUME to hơn MAX dB khoảng 6–7 LU (đo bằng ffmpeg ebur128, đỉnh thật vẫn ≤ -1 dBTP). Đổi lại nhạc rất "đặc" và hơi gắt; kéo về 100% (MAX dB) nếu muốn sạch hơn. Preset cũng có reverb phòng nhẹ.
+
 Muốn **chỉ nhân gain, không nén gì** (giữ đúng khoảng cách giữa các đoạn): kéo "MAX dB" xuống ~20–30% và tắt "Nén động", hoặc dùng "Chuẩn hóa đỉnh: Luôn kéo đỉnh về mức tối đa". Gợi ý xuất FLAC/WAV 24-bit hoặc MP3 320 / AAC. Giới hạn: file nguồn rất nhiễu sẽ bị nâng cả nhiễu nền; độ to thực tế sau limiter được bù để bám sát mục tiêu (kiểm tra bằng đo trực tiếp: -5,6 LUFS so với mục tiêu -5,5).
 
 ## Chỉnh thông số sau khi chọn preset
