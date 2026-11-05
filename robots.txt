@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://swaymusic.pages.dev/sitemap.xml

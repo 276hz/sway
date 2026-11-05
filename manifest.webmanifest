@@ -1,0 +1,20 @@
+{
+  "id": "./",
+  "name": "Sway",
+  "short_name": "Sway",
+  "description": "在浏览器中转换音频和视频，并添加 8D、混响等效果。文件不会上传。",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f5f3",
+  "theme_color": "#f5f5f3",
+  "categories": ["music", "multimedia", "utilities"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
